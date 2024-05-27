@@ -1,32 +1,33 @@
-import { useEffect, useRef, useState } from "react"
-import "./chat.css"
-import EmojiPicker from "emoji-picker-react"
+import { useEffect, useRef, useState } from "react";
+import EmojiPicker from "emoji-picker-react";
+import "./chat.css";
 
-const Chat = () => {
-    const [open,setOpen] = useState(false)
-    const [text, setText] = useState("")
-
-    const endRef = useRef(null)
+const Chat = ({ user }) => {
+    const [open, setOpen] = useState(false);
+    const [text, setText] = useState("");
+    const endRef = useRef(null);
 
     useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior : "smooth"});
+        endRef.current?.scrollIntoView({ behavior: "smooth" });
     }, []);
 
-    const handleEmoji = e => {
-        setText((prev) => prev + e.emoji)
-        setOpen(false)
-    }
+    const handleEmoji = (e) => {
+        setText((prev) => prev + e.emoji);
+        setOpen(false);
+    };
 
-    console.log(text)
+    useEffect(() => {
+        console.log("Chat component loaded with user:", user);
+    }, [user]);
 
     return (
-        <div className='chat'>
+        <div className="chat">
             <div className="top">
                 <div className="user">
                     <img src="./avatar.png" alt="" />
                     <div className="texts">
-                        <span>Jane Doe</span>
-                        <p>Lorem Ipsum dolor, sit amet</p>
+                        <span>{user?.displayName || "User"}</span>
+                        <p>{text}</p>
                     </div>
                 </div>
                 <div className="icons">
@@ -39,94 +40,40 @@ const Chat = () => {
                 <div className="message">
                     <img src="./avatar.png" alt="" />
                     <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message own">
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message own">
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message own">
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="texts">
-                        <p>
-                            Lorem ipsun
-                        </p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message own">
-                    <div className="texts">
-                        <img src="https://cdn.domestika.org/c_limit,dpr_1.0,f_auto,q_80,w_820/v1485276242/content-items/001/838/882/captura2-original.png?1485276242" alt="" />
-                        <p>
-                            Lorem ipsun
-                        </p>
+                        <p>Lorem ipsum</p>
                         <span>1 min ago</span>
                     </div>
                 </div>
                 <div ref={endRef}></div>
             </div>
-            <div className="botton">
+            <div className="bottom">
                 <div className="icons">
                     <img src="./img.png" alt="" />
                     <img src="./camera.png" alt="" />
                     <img src="./mic.png" alt="" />
                 </div>
-                <input type="text" placeholder="Type a message..."
-                value={text} 
-                onChange={e=>setText(e.target.value)}/>
+                <input
+                    type="text"
+                    placeholder="Type a message..."
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                />
                 <div className="emoji">
-                    <img src="./emoji.png" alt="" 
-                    onClick={() => setOpen((prev) => !prev)}/>
-                    <div className="picker">
-                        <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
-                    </div>
+                    <img
+                        src="./emoji.png"
+                        alt=""
+                        onClick={() => setOpen((prev) => !prev)}
+                    />
+                    {open && (
+                        <div className="picker">
+                            <EmojiPicker onEmojiClick={handleEmoji} />
+                        </div>
+                    )}
                 </div>
                 <button className="sendButton">Send</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Chat
+export default Chat;
